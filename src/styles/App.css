@@ -1,0 +1,94 @@
+.main-block,
+.ticket {
+  background: rgb(252, 252, 252); /*rgba(219, 219, 219, 0.5);*/
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 1em;
+}
+
+.main-block {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.trip-type {
+  padding-top: 1em;
+}
+
+.btn,
+.form-control,
+.upper-case {
+  text-transform: uppercase;
+}
+
+.search-button-wrapper {
+  text-align: center;
+}
+
+.btn {
+  width: 100%;
+}
+
+.search-button-wrapper {
+  padding-top: 1em;
+}
+
+.row-item,
+.airport {
+  margin-bottom: 1em;
+}
+
+.ticket {
+  padding: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.separator {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.time,
+.airline {
+  max-width: 110px;
+}
+
+.airline-code,
+.stop-quantity-number,
+.price-number,
+.price-code {
+  margin-right: 0.25em;
+}
+
+.airline-number,
+.stop-quantity-name {
+  margin-left: 0.25em;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.time-airline,
+.elapsed-time-airports,
+.stop-quantity,
+.price-ticket {
+}
+
+.stop-quantity {
+  vertical-align: top;
+  text-align: center;
+}
+
+.arrow {
+  vertical-align: top;
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
