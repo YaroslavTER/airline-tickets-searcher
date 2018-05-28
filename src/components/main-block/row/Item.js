@@ -9,7 +9,7 @@ export class Item extends Component {
           {this.props.itemName}
         </label>
         <input
-          className="form-control"
+          className="form-control item-input"
           type={this.props.type}
           name={this.props.name}
           max={this.props.max}

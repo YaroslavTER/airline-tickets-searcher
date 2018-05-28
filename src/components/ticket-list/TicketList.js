@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Ticket } from "./Ticket";
+import { Ticket } from "./ticket/Ticket";
 
 export class TicketList extends Component {
   renderList(ticketList) {

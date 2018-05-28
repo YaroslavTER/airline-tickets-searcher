@@ -81,6 +81,7 @@ export class MainBlock extends Component {
     const dataList = json.PricedItineraries;
     //airline code - https://api-crt.cert.havail.sabre.com/v1/lists/utilities/airlines?airlinecode=ps
     //airports code - https://api-crt.cert.havail.sabre.com/v1/lists/supported/cities/iev/airports
+    //air equipment type - https://api-crt.cert.havail.sabre.com/v1/lists/utilities/aircraft/equipment?aircraftcode=738
     console.log(json);
   }
 
