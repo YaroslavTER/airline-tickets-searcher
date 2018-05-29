@@ -12,7 +12,6 @@ export class DetailedInfo extends Component {
                 &times;
               </button>
             </div>
-
             <div className="modal-body">Modal body..</div>
           </div>
         </div>

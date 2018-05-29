@@ -2,11 +2,17 @@ import React, { Component } from "react";
 
 export class Item extends Component {
   render() {
+    let marginRight = "";
+    if (this.props.iconName) {
+      marginRight = "mr-1";
+    }
     return (
       <div className="form-group col-md-6">
         <label className="upper-case">
-          <i className={this.props.iconName} />
-          {this.props.itemName}
+          <div className={`inline icon ${marginRight}`}>
+            <i className={this.props.iconName} />
+          </div>
+          <div className="inline item-name">{this.props.itemName}</div>
         </label>
         <input
           className="form-control item-input"

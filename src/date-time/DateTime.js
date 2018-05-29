@@ -25,7 +25,6 @@ const instaFlightsSearch = (function() {
     let minutes = Math.round(
       Number(`0.${getHalf(convertedHour, separator, 1)}`) * 60
     );
-    console.log(minutes);
     if (isNaN(minutes)) {
       minutes = 0;
     }

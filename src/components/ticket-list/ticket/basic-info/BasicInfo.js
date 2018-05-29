@@ -16,18 +16,17 @@ export class BasicInfo extends Component {
           element.elapsedTime
         );
         let separator = <hr />;
-        const indexList = index;
         if (index === length - 1 && outerIndex === flightListLength - 1) {
           separator = null;
         }
         return (
           <div
             className="departure-info"
-            key={`${index} ${indexList} 0 flight`}
+            key={`${index} ${outerIndex} 0 flight`}
           >
-            <div key={`${index} ${indexList} 1 flight`}>
+            <div key={`${index} ${outerIndex} 1 flight`}>
               <FlightInfoRow
-                key={`${index} ${indexList} flight`}
+                key={`${index} ${outerIndex} flight`}
                 time={{
                   departure: DateTime.getTime(departureFlightDate),
                   arrival: DateTime.getTime(arrivalFlightDate)

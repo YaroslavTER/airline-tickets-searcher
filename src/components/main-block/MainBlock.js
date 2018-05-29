@@ -54,7 +54,7 @@ export class MainBlock extends Component {
 
   handleSearchClick() {
     InstaFlightSearch.pullData(
-      `origin=${this.state.airports.departure}&destination=${
+      `shop/flights?origin=${this.state.airports.departure}&destination=${
         this.state.airports.arrival
       }&departuredate=${this.state.dates.departure}&returndate=${
         this.state.dates.arrival
