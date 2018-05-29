@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { SearchButton } from "./SearchButton";
 import { Row } from "./row/Row";
 import { TicketList } from "../ticket-list/TicketList";
-import instaFlightSearch from "../../api/insta-flights-search/instaFlightsSearch";
+import InstaFlightSearch from "../../api/insta-flights-search/instaFlightsSearch";
+import DateTime from "../../date-time/DateTime";
 
 export class MainBlock extends Component {
   constructor(props) {
@@ -14,12 +15,12 @@ export class MainBlock extends Component {
         arrival: "LWO"
       },
       dates: {
-        departure: this.addToCurrentDate(0, 0, 0),
-        arrival: this.addToCurrentDate(0, 0, 1)
+        departure: DateTime.addToCurrentDate(0, 0, 0),
+        arrival: DateTime.addToCurrentDate(0, 0, 1)
       },
       passengersNumber: 1,
       country: "UA",
-      ticketList: [{}]
+      ticketList: []
     };
 
     this.handleAirportChange = this.handleAirportChange.bind(this);
@@ -37,19 +38,6 @@ export class MainBlock extends Component {
     this.setState({ airports: airports });
   }
 
-  addToCurrentDate(inputYear, inputMonth, inputDay) {
-    const limit = 10;
-    const date = new Date();
-    const day = this.addZero(date.getDate() + inputDay, limit);
-    const month = this.addZero(date.getMonth() + 1 + inputMonth, limit);
-    const year = date.getFullYear() + inputYear;
-    return `${year}-${month}-${day}`;
-  }
-
-  addZero(number, limit) {
-    return number < limit ? "0" + number.toString() : number.toString();
-  }
-
   handleDateChange(event) {
     let dates = this.state.dates;
     dates[event.target.name] = event.target.value;
@@ -65,7 +53,7 @@ export class MainBlock extends Component {
   }
 
   handleSearchClick() {
-    instaFlightSearch.pullData(
+    InstaFlightSearch.pullData(
       `origin=${this.state.airports.departure}&destination=${
         this.state.airports.arrival
       }&departuredate=${this.state.dates.departure}&returndate=${
@@ -82,7 +70,42 @@ export class MainBlock extends Component {
     //airline code - https://api-crt.cert.havail.sabre.com/v1/lists/utilities/airlines?airlinecode=ps
     //airports code - https://api-crt.cert.havail.sabre.com/v1/lists/supported/cities/iev/airports
     //air equipment type - https://api-crt.cert.havail.sabre.com/v1/lists/utilities/aircraft/equipment?aircraftcode=738
-    console.log(json);
+    //console.log(json);
+    const ticketList = dataList.map(element => {
+      return {
+        typeOfTicket: element.AirItinerary.DirectionInd,
+        flightList: element.AirItinerary.OriginDestinationOptions.OriginDestinationOption.map(
+          element => {
+            return element.FlightSegment.map(element => {
+              return {
+                airports: {
+                  departure: element.DepartureAirport.LocationCode,
+                  arrival: element.ArrivalAirport.LocationCode
+                },
+                dateTime: {
+                  departure: element.DepartureDateTime,
+                  arrival: element.ArrivalDateTime
+                },
+                elapsedTime: element.ElapsedTime,
+                airplane: {
+                  airEquipmentType: element.Equipment.AirEquipType,
+                  flightNunber: element.FlightNumber,
+                  marcetingAirline: element.MarketingAirline.Code
+                },
+                stopQuantity: element.StopQuantity
+              };
+            });
+          }
+        ),
+        priceInfo: {
+          totalFare:
+            element.AirItineraryPricingInfo.ItinTotalFare.TotalFare.Amount,
+          code:
+            element.AirItineraryPricingInfo.ItinTotalFare.TotalFare.CurrencyCode
+        }
+      };
+    });
+    this.setState({ ticketList: ticketList });
   }
 
   render() {

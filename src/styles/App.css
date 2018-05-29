@@ -17,8 +17,8 @@
 .ticket {
   cursor: pointer;
   padding: 1em;
-  /*margin-top: 0.5em;
-  margin-bottom: 0.5em;*/
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 
 .trip-type {
@@ -127,7 +127,7 @@
 }
 
 hr {
-  border-color: rgb(255, 255, 255); /*rgba(0, 123, 255, 0.5);*/
+  border-color: none; /*rgb(255, 255, 255); /*rgba(0, 123, 255, 0.5);*/
 }
 
 .vertical-line {
@@ -135,4 +135,8 @@ hr {
   position: absolute;
   margin-top: -1em;
   min-height: 160px;
+}
+
+.hidden {
+  visibility: hidden;
 }

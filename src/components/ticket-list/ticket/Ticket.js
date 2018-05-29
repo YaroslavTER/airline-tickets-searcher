@@ -7,35 +7,10 @@ export class Ticket extends Component {
     return (
       <div>
         <BasicInfo
-          price="3800"
-          priceCode="UAH"
-          typeOfTicket="return ticket"
-          departure={{
-            time: {
-              departure: "10:20",
-              arrival: "11:40"
-            },
-            elapsedTime: "1 hour 10 minutes",
-            airports: {
-              departure: "IEV",
-              arrival: "LWO"
-            },
-            airlineCode: "PS",
-            flightNumber: 35
-          }}
-          arrival={{
-            time: {
-              departure: "10:20",
-              arrival: "11:40"
-            },
-            elapsedTime: "1 hour 10 minutes",
-            airports: {
-              departure: "IEV",
-              arrival: "LWO"
-            },
-            airlineCode: "PS",
-            flightNumber: 35
-          }}
+          price={this.props.price}
+          priceCode={this.props.priceCode}
+          typeOfTicket={this.props.typeOfTicket}
+          flightList={this.props.flightList}
         />
         <DetailedInfo />
       </div>

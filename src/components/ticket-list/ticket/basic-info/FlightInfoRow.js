@@ -19,7 +19,7 @@ export class FlightInfoRow extends Component {
           airports={this.props.airports}
         />
 
-        <StopsQuantity />
+        <StopsQuantity numberOfStops={this.props.numberOfStops} />
       </div>
     );
   }
