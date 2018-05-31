@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { SearchButton } from "./SearchButton";
 import { Row } from "./row/Row";
 import { TicketList } from "../ticket-list/TicketList";
-import InstaFlightSearch from "../../api/insta-flights-search/instaFlightsSearch";
+import InstaFlightsSearch from "../../api/insta-flights-search/InstaFlightsSearch";
 import DateTime from "../../date-time/DateTime";
 
 export class MainBlock extends Component {
@@ -15,9 +15,10 @@ export class MainBlock extends Component {
         arrival: "LWO"
       },
       dates: {
-        departure: DateTime.addToCurrentDate(0, 0, 0),
-        arrival: DateTime.addToCurrentDate(0, 0, 1)
+        departure: DateTime.addToCurrentDay(0),
+        arrival: DateTime.addToCurrentDay(1)
       },
+      currentDate: DateTime.addToCurrentDay(0),
       passengersNumber: 1,
       country: "UA",
       ticketList: []
@@ -53,7 +54,7 @@ export class MainBlock extends Component {
   }
 
   handleSearchClick() {
-    InstaFlightSearch.pullData(
+    InstaFlightsSearch.pullData(
       `shop/flights?origin=${this.state.airports.departure}&destination=${
         this.state.airports.arrival
       }&departuredate=${this.state.dates.departure}&returndate=${
@@ -67,10 +68,6 @@ export class MainBlock extends Component {
 
   handleJSON(json) {
     const dataList = json.PricedItineraries;
-    //airline code - https://api-crt.cert.havail.sabre.com/v1/lists/utilities/airlines?airlinecode=ps
-    //airports code - https://api-crt.cert.havail.sabre.com/v1/lists/supported/cities/iev/airports
-    //air equipment type - https://api-crt.cert.havail.sabre.com/v1/lists/utilities/aircraft/equipment?aircraftcode=738
-    //console.log(json);
     const ticketList = dataList.map(element => {
       return {
         typeOfTicket: element.AirItinerary.DirectionInd,
@@ -89,7 +86,7 @@ export class MainBlock extends Component {
                 elapsedTime: element.ElapsedTime,
                 airplane: {
                   airEquipmentType: element.Equipment.AirEquipType,
-                  flightNunber: element.FlightNumber,
+                  flightNumber: element.FlightNumber,
                   marcetingAirline: element.MarketingAirline.Code
                 },
                 stopQuantity: element.StopQuantity
@@ -111,7 +108,7 @@ export class MainBlock extends Component {
   render() {
     const type = {
       text: { name: "text" },
-      date: { name: "date", min: "1000-01-01", max: "3000-12-31" }
+      date: { name: "date", min: this.state.currentDate, max: "3000-12-31" }
     };
     const dates = Object.keys(this.state.dates);
     const airports = Object.keys(this.state.airports);
@@ -122,7 +119,7 @@ export class MainBlock extends Component {
             firstItemName="departure"
             firstItemInputName={airports[0]}
             secondItemInputName={airports[1]}
-            firstItemIconName="fas fa-plane"
+            firstItemIconName="fas fa-map-marker-alt"
             secondItemName="arrival"
             firstItemType={type.text.name}
             secondItemType={type.text.name}
@@ -164,7 +161,10 @@ export class MainBlock extends Component {
 
           <SearchButton name="search flight" onClick={this.handleSearchClick} />
         </div>
-        <TicketList ticketList={this.state.ticketList} />
+        <TicketList
+          ticketList={this.state.ticketList}
+          airportCities={this.state.airports}
+        />
       </div>
     );
   }

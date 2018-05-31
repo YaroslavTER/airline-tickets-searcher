@@ -1,9 +1,10 @@
 const instaFlightsSearch = (function() {
-  function addToCurrentDate(inputYear, inputMonth, inputDay) {
+  function addToCurrentDay(inputDay) {
     const date = new Date();
-    const day = addZero(date.getDate() + inputDay);
-    const month = addZero(date.getMonth() + 1 + inputMonth);
-    const year = date.getFullYear() + inputYear;
+    date.setDate(date.getDate() + inputDay);
+    const day = addZero(date.getDate());
+    const month = addZero(date.getMonth() + 1);
+    const year = date.getFullYear();
     return `${year}-${month}-${day}`;
   }
 
@@ -39,7 +40,7 @@ const instaFlightsSearch = (function() {
   }
 
   return {
-    addToCurrentDate: addToCurrentDate,
+    addToCurrentDay: addToCurrentDay,
     getTime: getTime,
     addZero: addZero,
     convertElapsedTime: convertElapsedTime

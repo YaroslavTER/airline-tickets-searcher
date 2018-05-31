@@ -11,6 +11,7 @@ export class TicketList extends Component {
           priceCode={element.priceInfo.code}
           typeOfTicket={`${element.typeOfTicket} ticket`}
           flightList={element.flightList}
+          airportCities={this.props.airportCities}
         />
       );
     });

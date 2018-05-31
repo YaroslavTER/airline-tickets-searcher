@@ -32,7 +32,7 @@ export class BasicInfo extends Component {
                   arrival: DateTime.getTime(arrivalFlightDate)
                 }}
                 airlineCode={element.airplane.marcetingAirline}
-                flightNumber={element.airplane.flightNunber}
+                flightNumber={element.airplane.flightNumber}
                 elapsedTime={`${convertedElapsedTime.hour} hour ${
                   convertedElapsedTime.minutes
                 } minutes`}
@@ -50,7 +50,11 @@ export class BasicInfo extends Component {
   render() {
     return (
       <div>
-        <div className="ticket" data-toggle="modal" data-target="#more-info">
+        <div
+          className="ticket"
+          data-toggle="modal"
+          data-target={`#${this.props.target}`}
+        >
           <div className="flight-info inline">
             {this.renderFlightList(this.props.flightList)}
           </div>

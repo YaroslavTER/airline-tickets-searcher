@@ -1,10 +1,3 @@
-/*body {
-  background: url(https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=71fccab9bea9d8442c60daa81bae7dff&auto=format&fit=crop&w=1350&q=80)
-    no-repeat center center fixed;
-  background-size: cover;
-  height: 100vh;
-}*/
-
 body {
-  background: rgb(245, 245, 245); /*rgb(236, 236, 236);*/
+  background: rgb(245, 245, 245);
 }
