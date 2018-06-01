@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Ticket } from "./ticket/Ticket";
+import { Loader } from "./loader/Loader";
+import { NotFound } from "./not-found/NotFound";
 
 export class TicketList extends Component {
   renderList(ticketList) {
@@ -18,6 +20,14 @@ export class TicketList extends Component {
   }
 
   render() {
-    return <div>{this.renderList(this.props.ticketList)}</div>;
+    let render = [];
+    if (this.props.isLoading) {
+      render = <Loader />;
+    } else if (this.props.isNotFound) {
+      render = <NotFound text="Not found." />;
+    } else {
+      render = this.renderList(this.props.ticketList);
+    }
+    return <div>{render}</div>;
   }
 }

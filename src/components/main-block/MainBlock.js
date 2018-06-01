@@ -19,8 +19,10 @@ export class MainBlock extends Component {
         arrival: DateTime.addToCurrentDay(1)
       },
       currentDate: DateTime.addToCurrentDay(0),
-      passengersNumber: 1,
+      passengersNumber: { value: 1, invalidFeedback: "" },
       country: "UA",
+      isLoading: false,
+      isNotFound: false,
       ticketList: []
     };
 
@@ -46,7 +48,14 @@ export class MainBlock extends Component {
   }
 
   handlePassangersNumberChange(event) {
-    this.setState({ passengersNumber: Number(event.target.value) });
+    let number = Number(event.target.value);
+    if (number < 0 || isNaN(number)) {
+      this.setState({ passengersNumber: { value: 0 } });
+    } else {
+      this.setState({
+        passengersNumber: { value: Number(number) }
+      });
+    }
   }
 
   handleCountryChange(event) {
@@ -54,6 +63,7 @@ export class MainBlock extends Component {
   }
 
   handleSearchClick() {
+    this.setState({ isLoading: true });
     InstaFlightsSearch.pullData(
       `shop/flights?origin=${this.state.airports.departure}&destination=${
         this.state.airports.arrival
@@ -61,57 +71,63 @@ export class MainBlock extends Component {
         this.state.dates.arrival
       }&onlineitinerariesonly=N&limit=10&offset=1&eticketsonly=N&sortby=totalfare&order=asc&sortby2=departuretime&order2=asc&pointofsalecountry=${
         this.state.country
-      }&passengercount=${this.state.passengersNumber}`,
+      }&passengercount=${this.state.passengersNumber.value}`,
       json => this.handleJSON(json)
     );
   }
 
   handleJSON(json) {
     const dataList = json.PricedItineraries;
-    const ticketList = dataList.map(element => {
-      return {
-        typeOfTicket: element.AirItinerary.DirectionInd,
-        flightList: element.AirItinerary.OriginDestinationOptions.OriginDestinationOption.map(
-          element => {
-            return element.FlightSegment.map(element => {
-              return {
-                airports: {
-                  departure: element.DepartureAirport.LocationCode,
-                  arrival: element.ArrivalAirport.LocationCode
-                },
-                dateTime: {
-                  departure: element.DepartureDateTime,
-                  arrival: element.ArrivalDateTime
-                },
-                elapsedTime: element.ElapsedTime,
-                airplane: {
-                  airEquipmentType: element.Equipment.AirEquipType,
-                  flightNumber: element.FlightNumber,
-                  marcetingAirline: element.MarketingAirline.Code
-                },
-                stopQuantity: element.StopQuantity
-              };
-            });
+    if (dataList === undefined) {
+      this.setState({ isNotFound: true, isLoading: false });
+    } else {
+      const ticketList = dataList.map(element => {
+        return {
+          typeOfTicket: element.AirItinerary.DirectionInd,
+          flightList: element.AirItinerary.OriginDestinationOptions.OriginDestinationOption.map(
+            element => {
+              return element.FlightSegment.map(element => {
+                return {
+                  airports: {
+                    departure: element.DepartureAirport.LocationCode,
+                    arrival: element.ArrivalAirport.LocationCode
+                  },
+                  dateTime: {
+                    departure: element.DepartureDateTime,
+                    arrival: element.ArrivalDateTime
+                  },
+                  elapsedTime: element.ElapsedTime,
+                  airplane: {
+                    airEquipmentType: element.Equipment.AirEquipType,
+                    flightNumber: element.FlightNumber,
+                    marcetingAirline: element.MarketingAirline.Code
+                  },
+                  stopQuantity: element.StopQuantity
+                };
+              });
+            }
+          ),
+          priceInfo: {
+            totalFare:
+              element.AirItineraryPricingInfo.ItinTotalFare.TotalFare.Amount,
+            code:
+              element.AirItineraryPricingInfo.ItinTotalFare.TotalFare
+                .CurrencyCode
           }
-        ),
-        priceInfo: {
-          totalFare:
-            element.AirItineraryPricingInfo.ItinTotalFare.TotalFare.Amount,
-          code:
-            element.AirItineraryPricingInfo.ItinTotalFare.TotalFare.CurrencyCode
-        }
-      };
-    });
-    this.setState({ ticketList: ticketList });
+        };
+      });
+      this.setState({
+        ticketList: ticketList,
+        isLoading: false,
+        isNotFound: false
+      });
+    }
   }
 
   render() {
-    const type = {
-      text: { name: "text" },
-      date: { name: "date", min: this.state.currentDate, max: "3000-12-31" }
-    };
     const dates = Object.keys(this.state.dates);
     const airports = Object.keys(this.state.airports);
+    const dateTypeInput = "date";
     return (
       <div>
         <div className="container main-block">
@@ -121,8 +137,8 @@ export class MainBlock extends Component {
             secondItemInputName={airports[1]}
             firstItemIconName="fas fa-map-marker-alt"
             secondItemName="arrival"
-            firstItemType={type.text.name}
-            secondItemType={type.text.name}
+            firstItemType="text"
+            secondItemType="text"
             firstItemValue={this.state.airports.departure}
             secondItemValue={this.state.airports.arrival}
             firstItemPlaceholder={airports[0]}
@@ -140,10 +156,10 @@ export class MainBlock extends Component {
             secondItemIconName=""
             firstItemName={dates[0]}
             secondItemName={dates[1]}
-            firstItemType={type.date.name}
-            secondItemType={type.date.name}
-            firstItemMin={type.date.min}
-            secondItemMax={type.date.max}
+            firstItemType={dateTypeInput}
+            secondItemType={dateTypeInput}
+            firstItemMin={this.state.currentDate}
+            secondItemMin={this.state.dates.departure}
             firstItemOnChange={this.handleDateChange}
             secondItemOnChange={this.handleDateChange}
           />
@@ -153,7 +169,7 @@ export class MainBlock extends Component {
             secondItemName="country"
             firstItemIconName="fas fa-user-circle"
             secondItemIconName="fas fa-globe"
-            firstItemValue={this.state.passengersNumber}
+            firstItemValue={this.state.passengersNumber.value}
             firstItemOnChange={this.handlePassangersNumberChange}
             secondItemValue={this.state.country}
             secondItemOnChange={this.handleCountryChange}
@@ -164,6 +180,8 @@ export class MainBlock extends Component {
         <TicketList
           ticketList={this.state.ticketList}
           airportCities={this.state.airports}
+          isLoading={this.state.isLoading}
+          isNotFound={this.state.isNotFound}
         />
       </div>
     );

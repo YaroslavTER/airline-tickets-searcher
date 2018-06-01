@@ -143,5 +143,41 @@ hr {
 }
 
 .aircraft-name {
+  font-weight: bold;
   color: rgb(0, 123, 255);
+}
+
+.not-found {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.loader {
+  margin-top: 1em;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 50%;
+  border-top: 2px solid rgb(0, 123, 255);
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

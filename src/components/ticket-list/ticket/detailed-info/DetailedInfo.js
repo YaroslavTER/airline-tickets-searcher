@@ -59,8 +59,8 @@ export class DetailedInfo extends Component {
               </button>
             </div>
             <div className="modal-body">
-              <div className="airline-name">{this.state.airlineName}</div>
               <div className="aircraft-name">{this.state.aircraftName}</div>
+              <div className="airline-name">{this.state.airlineName}</div>
             </div>
           </div>
         </div>
